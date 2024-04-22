@@ -2,16 +2,16 @@ package com.example.networking;
 
 public class Mountain {
 
-    private String Name;
+    private String name;
     private String Place;
     private int Hight;
 
-    public Mountain(String Name){
-        this.Name = Name;
+    public Mountain(String name){
+        this.name = name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPlace(String Place) {
@@ -23,7 +23,7 @@ public class Mountain {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public String getPlace() {
@@ -32,5 +32,14 @@ public class Mountain {
 
     public int getHight() {
         return Hight;
+    }
+
+    @Override
+    public String toString() {
+        return "Mountain{" +
+                "Name='" + name + '\'' +
+                ", Place='" + Place + '\'' +
+                ", Hight=" + Hight +
+                '}';
     }
 }
