@@ -16,22 +16,25 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     private final String JSON_URL = "HTTPS_URL_TO_JSON_DATA_CHANGE_THIS_URL";
     private final String JSON_FILE = "mountains.json";
 
-    private RecyclerView resView;
-    private RecyclerViewAdapter resViewAdapter;
+    private RecyclerView recView;
+    private RecyclerViewAdapter recViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList Mountains = new ArrayList<>(Arrays.asList(
+        ArrayList<Mountain> Mountains = new ArrayList<>(Arrays.asList(
             new Mountain("Billigen"),
             new Mountain("Mount Everest"),
             new Mountain("Uluru")
         ));
 
-        resView = findViewById(R.id.recycler_view);
-        resView.setLayoutManager(new LinearLayoutManager(this));
+        recViewAdapter = new RecyclerViewAdapter(this, Mountains);
+
+        recView = findViewById(R.id.recycler_view);
+        recView.setLayoutManager(new LinearLayoutManager(this));
+        recView.setAdapter(recViewAdapter);
 
         new JsonFile(this, this).execute(JSON_FILE);
     }
