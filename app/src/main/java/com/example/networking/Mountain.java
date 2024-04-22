@@ -1,10 +1,14 @@
 package com.example.networking;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Mountain {
 
     private String name;
-    private String Place;
-    private int Hight;
+    @SerializedName("location")
+    private String place;
+    @SerializedName("size")
+    private int hight;
 
     public Mountain(String name){
         this.name = name;
@@ -14,12 +18,12 @@ public class Mountain {
         this.name = name;
     }
 
-    public void setPlace(String Place) {
-        this.Place = Place;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public void setHight(int Hight) {
-        this.Hight = Hight;
+    public void setHight(int hight) {
+        this.hight = hight;
     }
 
     public String getName() {
@@ -27,19 +31,19 @@ public class Mountain {
     }
 
     public String getPlace() {
-        return Place;
+        return place;
     }
 
     public int getHight() {
-        return Hight;
+        return hight;
     }
 
     @Override
     public String toString() {
         return "Mountain{" +
                 "Name='" + name + '\'' +
-                ", Place='" + Place + '\'' +
-                ", Hight=" + Hight +
+                ", Place='" + place + '\'' +
+                ", Hight=" + hight +
                 '}';
     }
 }
