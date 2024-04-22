@@ -1,42 +1,101 @@
 
 # Rapport
 
-**Skriv din rapport här!**
+Detta är rapporten för Networking
 
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
-
+I activity_main.xml lade det till en recyclerview.
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+<androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+```
+
+En ny xml fill lades till för att visa hur elementen i recyclerview ska se ut.
+```
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+
+</LinearLayout>
+```
+
+Mountain class var skapad and given geters and seters.
+```
+public class Mountain {
+
+    private String name;
+    @SerializedName("location")
+    private String place;
+    @SerializedName("size")
+    private int hight;
+
+    public Mountain(String name){
+        this.name = name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+```
+
+I mainActivity.java sättes en arraylist av mountains, RecyclerViewAdaptern skapades
+och recView sates som RecyclerView.
+```
+Mountains = new ArrayList<>(Arrays.asList(
+    new Mountain("Billigen"),
+    new Mountain("Mount Everest"),
+    new Mountain("Uluru")
+));
+
+recViewAdapter = new RecyclerViewAdapter(this, Mountains);
+
+recView = findViewById(R.id.recycler_view);
+recView.setLayoutManager(new LinearLayoutManager(this));
+recView.setAdapter(recViewAdapter);
+```
+
+RecycelViewAdapter.java kopierades från guiden och allt om onclick togs bort
+och en update metod skapades.
+```
+public class ViewHolder extends RecyclerView.ViewHolder {
+    TextView title;
+
+    ViewHolder(View itemView) {
+        super(itemView);
+        title = itemView.findViewById(R.id.title);
     }
 }
+
+public void updateAdapter(ArrayList<Mountain> newItems){
+    items.addAll(newItems);
+}
+
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+Till sista så lades det till i onPostExecute i mainActivity.java så bergen från JSON mappen 
+läggs till i listan av berg.
+```
+Type type = new TypeToken<ArrayList<Mountain>>() {}.getType();
+ArrayList<Mountain> listOfMountains = gson.fromJson(json, type);
 
-![](android.png)
+recViewAdapter.updateAdapter(listOfMountains);
+recViewAdapter.notifyDataSetChanged();
+```
 
-Läs gärna:
+på grund av firewall så gorde jag inte JSON hämtningen från websidan.
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+![](Screenshot_Networking.png)
