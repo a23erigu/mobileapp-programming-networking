@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
@@ -11,10 +16,25 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
     private final String JSON_URL = "HTTPS_URL_TO_JSON_DATA_CHANGE_THIS_URL";
     private final String JSON_FILE = "mountains.json";
 
+    private RecyclerView recView;
+    private RecyclerViewAdapter recViewAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ArrayList<Mountain> Mountains = new ArrayList<>(Arrays.asList(
+            new Mountain("Billigen"),
+            new Mountain("Mount Everest"),
+            new Mountain("Uluru")
+        ));
+
+        recViewAdapter = new RecyclerViewAdapter(this, Mountains);
+
+        recView = findViewById(R.id.recycler_view);
+        recView.setLayoutManager(new LinearLayoutManager(this));
+        recView.setAdapter(recViewAdapter);
 
         new JsonFile(this, this).execute(JSON_FILE);
     }
